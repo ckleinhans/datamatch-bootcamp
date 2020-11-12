@@ -1,0 +1,20 @@
+table,
+td,
+tr,
+th {
+  border: 1px solid black;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td.cardWindow,
+td.progressBar {
+  text-align: center;
+}
+
+td,
+th {
+  padding: 10px;
+}
