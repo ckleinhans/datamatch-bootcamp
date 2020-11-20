@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './CardEditor.css';
 
 class CardEditor extends React.Component {
@@ -37,7 +38,7 @@ class CardEditor extends React.Component {
     });
 
     const changeViewButton = (cards.length > 0) ? 
-        <button onClick={this.props.switchView}>View Cards</button> : 'You must have at least 1 card to use the Card Viewer.';
+        <Link to="/viewer">Go to the card viewer</Link> : 'You must have at least 1 card to use the Card Viewer.';
 
     return (
       <div>

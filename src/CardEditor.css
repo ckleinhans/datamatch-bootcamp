@@ -9,8 +9,12 @@ table {
   border-collapse: collapse;
 }
 
-td.cardWindow,
-td.progressBar {
+td#cardWindow {
+  text-align: center;
+  padding: 40px;
+}
+
+td#progressBar {
   text-align: center;
 }
 
