@@ -4,6 +4,7 @@ import CardViewer from './CardViewer.js';
 import Homepage from './Homepage.js';
 import { Switch } from 'react-router-dom';
 import { Route } from 'react-router-dom';
+import User from './User.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -48,6 +49,9 @@ class App extends React.Component {
       </Route>
       <Route exact path="/">
         <Homepage />
+      </Route>
+      <Route path="/user/:name">
+        <User />
       </Route>
     </Switch>
     );
