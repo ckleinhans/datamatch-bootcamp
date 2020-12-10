@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import './CardEditor.css';
-import {firebaseConnect, isEmpty, isLoaded} from 'react-redux-firebase';
+import {firebaseConnect, isEmpty, isLoaded, populate} from 'react-redux-firebase';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 
@@ -44,6 +44,7 @@ class CardViewer extends React.Component {
     return (
       <div>
         <h2>{this.props.name}</h2>
+        <h4>Created by {this.props.username}</h4>
         <table>
           <tbody>
             <tr>
@@ -71,18 +72,23 @@ class CardViewer extends React.Component {
   }
 }
 
+const populates = [
+  { child: 'owner', root: 'users' }
+]
+
 const mapStateToProps = (state, props) => {
-  const deck = state.firebase.data[props.match.params.deckId];
+  const deck = populate(state.firebase, props.match.params.deckId, populates);
   const name = deck && deck.name;
   const cards = deck && deck.cards;
-  return {cards: cards, name: name};
-}
+  const username = deck && deck.owner && deck.owner.username;
+  return { cards: cards, name: name, username: username };
+};
 
 export default compose(
   withRouter,
   firebaseConnect(props => {
     const deckId = props.match.params.deckId;
-    return [{path: `/flashcards/${deckId}`, storeAs: deckId}];
+    return [{path: `/flashcards/${deckId}`, populates, storeAs: deckId}];
   }),
   connect(mapStateToProps)
 )(CardViewer);

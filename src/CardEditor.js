@@ -1,8 +1,9 @@
 import React from 'react';
 import './CardEditor.css';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, withRouter, Redirect } from 'react-router-dom';
 import { firebaseConnect } from 'react-redux-firebase';
 import { compose } from 'redux';
+import {connect} from 'react-redux';
 
 class CardEditor extends React.Component {
   constructor(props) {
@@ -12,6 +13,7 @@ class CardEditor extends React.Component {
       front: '',
       back: '',
       name: '',
+      isPublic: false,
     }
   }
 
@@ -36,15 +38,24 @@ class CardEditor extends React.Component {
     this.setState({[event.target.name]: event.target.value});
   }
 
+  handleCheckboxChange = event => {
+    this.setState({[event.target.name]: event.target.checked});
+  }
+
   createDeck = () => {
     const deckId = this.props.firebase.push('/flashcards').key;
     const newDeck = {
       name: this.state.name,
       cards: this.state.cards,
+      owner: this.props.isLoggedIn,
     };
     const updates = {};
     updates[`/flashcards/${deckId}`] = newDeck;
-    updates[`/names/${deckId}`] = {name: newDeck.name};
+    updates[`/names/${deckId}`] = {
+      name: newDeck.name,
+      isPublic: this.state.isPublic,
+      owner: newDeck.owner,
+    };
     const onUpdate = () => {
       this.props.history.push(`/viewer/${deckId}`);
     };
@@ -52,6 +63,10 @@ class CardEditor extends React.Component {
   }
 
   render() {
+    if (!this.props.isLoggedIn) {
+      return <Redirect to='/register'/>
+    }
+
     const cards = this.state.cards.map((card, index) => {
       return (
         <tr key={index}>
@@ -68,6 +83,9 @@ class CardEditor extends React.Component {
         <h2>Card Editor</h2>
         <div>
           Deck name: <input name="name" onChange={this.handleInputChange} placeholder="Name of deck" value={this.state.name}/>
+          <div/>
+          <input type="checkbox" id="public" name="isPublic" checked={this.state.isPublic} onChange={this.handleCheckboxChange}/>
+          <label for="public"> Make this deck public</label><br/>
         </div><br/>
         <table>
           <thead>
@@ -104,4 +122,8 @@ class CardEditor extends React.Component {
   }
 }
 
-export default compose(firebaseConnect(), withRouter)(CardEditor);
+const mapStateToProps = state => {
+  return {isLoggedIn: state.firebase.auth.uid};
+}
+
+export default compose(firebaseConnect(), connect(mapStateToProps), withRouter)(CardEditor);

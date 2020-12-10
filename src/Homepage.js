@@ -16,14 +16,17 @@ class Homepage extends React.Component {
     } else {
       const keys = Object.keys(this.props.decks);
       decks = keys.map(key => {
-        const name = this.props.decks[key].name;
-        return(<div><Link to={`/viewer/${key}`}>{name}</Link></div>)
+        if (this.props.decks[key].isPublic || this.props.decks[key].owner === this.props.isLoggedIn) {
+          const name = this.props.decks[key].name;
+          return(<div><Link to={`/viewer/${key}`}>{name}</Link></div>)
+        }
+        return '';
       })
     }
 
     return (
       <div>
-        <h1>Flash Cards Application</h1><br/>
+        <h1>Flash Cards Application</h1>
         <h4>by Caelan Kleinhans</h4>
         <hr/>
         <p>Welcome to the flash cards application! Use one of the following links to navigate to either create a new deck or view existing ones.</p><br/>
@@ -31,13 +34,31 @@ class Homepage extends React.Component {
         <br/>
         <h3>Decks</h3>
         {decks}
+
+        <h3>Account</h3>
+        {this.props.isLoggedIn ? (
+          <div>
+            <div>{this.props.email}</div>
+            <button onClick={() => this.props.firebase.logout()}>Logout</button>
+          </div> 
+        ) : (
+          <div>
+            <Link to="/register">Register</Link>
+            <br/>
+            <Link to="/login">Login</Link>
+          </div>
+        )}
       </div>
     );
   }
 }
 
 const mapStateToProps = (state, props) => {
-  return({decks: state.firebase.data['names']});
+  return({
+    decks: state.firebase.data['names'],
+    email: state.firebase.auth.email,
+    isLoggedIn: state.firebase.auth.uid,
+  });
 }
 
 export default compose(
