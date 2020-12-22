@@ -48,6 +48,7 @@ class CardEditor extends React.Component {
       name: this.state.name,
       cards: this.state.cards,
       owner: this.props.isLoggedIn,
+      isPublic: this.state.isPublic,
     };
     const updates = {};
     updates[`/flashcards/${deckId}`] = newDeck;

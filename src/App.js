@@ -1,15 +1,15 @@
 import React from 'react';
 import { Switch } from 'react-router-dom';
 import { Route } from 'react-router-dom';
-import {connect} from 'react-redux';
-import {isLoaded} from 'react-redux-firebase';
+import { connect } from 'react-redux';
+import { isLoaded } from 'react-redux-firebase';
 
 import CardEditor from './CardEditor.js';
 import CardViewer from './CardViewer.js';
 import Homepage from './Homepage.js';
 import PageRegister from './PageRegister.js';
 import PageLogin from './PageLogin.js';
-import User from './User.js';
+import PageProfile from './PageProfile.js';
 
 const App = props => {
   if (!isLoaded(props.auth, props.profile)) {
@@ -33,8 +33,8 @@ const App = props => {
     <Route exact path="/login">
       <PageLogin/>
     </Route>
-    <Route path="/user/:name">
-      <User />
+    <Route path="/profile">
+      <PageProfile />
     </Route>
     <Route>
       <div>Page not found</div>

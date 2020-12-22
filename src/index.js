@@ -8,10 +8,7 @@ import 'firebase/auth';
 
 import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
-import {
-  ReactReduxFirebaseProvider,
-  firebaseReducer
-} from 'react-redux-firebase';
+import { ReactReduxFirebaseProvider, firebaseReducer } from 'react-redux-firebase';
 
 import { composeWithDevTools } from 'redux-devtools-extension';
 
