@@ -1,3 +1,5 @@
 # Datamatch Bootcamp Flashcards Application
 
-This app was created using React and is hosted with Firebase. You can view the live version at https://test-19285.web.app/.
+An application created using React.js using Google Firebase for hosting, user authentication and database access to help learn the basics of Reach.js and Firebase.
+
+You can view the live version at https://test-19285.web.app/.
